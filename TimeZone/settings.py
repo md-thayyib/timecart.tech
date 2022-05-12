@@ -10,10 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-import imp
+
 import os
 from pathlib import Path
-import dotenv 
+SECRET_KEY = 'django-insecure-pws=8c^zk$xv!bv%+b3wd148&8d3^3n*w3t_wa!tp)d=d53gf)'
+RAZOR_KEY_SECRET = '7hOFVJSDn4Po1wyGPARzH9o6'
+RAZOR_KEY_ID='rzp_test_8cWmlnkYHYznrK'
 
 
 
@@ -28,17 +30,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # <- New
 
-# Add .env variables anywhere before SECRET_KEY
-dotenv_file = os.path.join(BASE_DIR, ".env")
-if os.path.isfile(dotenv_file):
-    dotenv.load_dotenv(dotenv_file)
 
-# UPDATE secret key
-SECRET_KEY = os.environ['SECRET_KEY'] # Instead of your actual secret key
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -151,7 +147,7 @@ STATICFILES_DIRS = [
     os.path.join('static')
 ]
 
-STATIC_ROOT = "/var/www/timecart.tech/static/"
+
 #media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR/'media'
@@ -162,9 +158,9 @@ MEDIA_ROOT = BASE_DIR/'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-RAZOR_KEY_ID =os.environ['RAZOR_KEY_ID']
 
-RAZOR_KEY_SECRET = os.environ['RAZOR_KEY_SECRET']
+
+
 
 
 
