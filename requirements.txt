@@ -19,8 +19,6 @@ MarkupPy==1.14
 odfpy==1.4.1
 openpyxl==3.0.9
 Pillow==9.1.0
-psycopg==3.0.11
-psycopg2-binary==2.9.3
 pycparser==2.21
 pydyf==0.1.2
 PyJWT==2.3.0
