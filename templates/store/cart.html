@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% load mathfilters%}
+ <!--================Cart Area =================-->
+ {% if not cart_items%}
+ <div style="width:100%;"><img style="margin-left:auto; margin-right:auto;" src="{% static 'img/gif/addtocart.gif' %}" alt=""></div>
+<h2>Your shopping cart is empty</h2>
+<br>
+<div class="text-center">
+    <a href="{% url 'store' %}" class="btn btn-primary">continue shopping</a>
+</div>
+ {% else%}
+ <div class="container">
+    <div class="row">
+        <div class="col-xl-12">
+            
+                <h2>Cart List</h2>
+            
+    </div>
+</div>
+ <section class="cart_area p-1">
+    <div class="container">
+      <div class="cart_inner">
+        <div class="table-responsive">
+          
+                    
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Product</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Remove</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+           
+            <tbody>        
+                {% for cart_item in cart_items%}
+              <tr>
+                <td>
+                  <div class="media">
+                    <div class="d-flex">
+                      <img src="{{cart_item.product.images.url}}" alt="" />
+                    </div>
+                    <div class="media-body">
+                      <p>{{cart_item.product.product_name}}</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  {% if cart_item.product.category.cat_offer%}
+                  <div class="d-flex align-items-center justify-content-center mt-2">
+                      
+                          <h5>₹  {{cart_item.product.category.cat_offer.discount|mul:cart_item.product.price|div:100|sub:cart_item.product.price|abs|floatformat:2}}</h5><h6 class="text-muted ml-2"><del>₹ {{cart_item.product.price}}</del></h6>
+                  
+                 </div>
+                  {% elif cart_item.product.pro_offer%}
+                  <div class="d-flex align-items-center justify-content-center mt-2">
+                      
+                          <h5>₹  {{cart_item.product.pro_offer.discount|mul:cart_item.product.price|div:100|sub:cart_item.product.price|abs|floatformat:2}}</h5><h6 class="text-muted ml-2"><del>₹ {{cart_item.product.price}}</del></h6>
+                  
+                 </div>
+                 {% else %}
+                 <div class="d-flex align-items-center justify-content-center mt-2"></div>
+                 <h5>₹ {{cart_item.product.price|floatformat:2}}</h5>
+              </div>      
+                 {% endif%}
+                </td>
+                <td>
+                  <div class="product_count">
+                    <a href="{% url 'remove_cart' cart_item.product.id %}"  ><i class="fas fa-minus" style="color: brown;"></i></a>
+                    <input type="text" value="{{cart_item.quantity}}">
+                    <a href="{% url 'add_cart' cart_item.product.id %}"  ><i class="fas fa-plus" style="color: brown;"></i></a>
+                  </div>
+                </td>
+                <td><a class="btn btn-primary" href="{% url 'delete_item' cart_item.product.id %}" role="button">Remove</a></td>
+                <td>
+                   <!-- total price of individula cart items -->
+                  {% if cart_item.product.category.cat_offer%}
+                  <div class="d-flex align-items-center justify-content-center mt-2">
+                      
+                          <h5>₹  {{cart_item.product.category.cat_offer.discount|mul:cart_item.product.price|div:100|sub:cart_item.product.price|abs|mul:cart_item.quantity|floatformat:2}}</h5><h6 class="text-muted ml-2"></h6>
+                  
+                 </div>
+                  {% elif cart_item.product.pro_offer%}
+                  <div class="d-flex align-items-center justify-content-center mt-2">
+                      
+                          <h5>₹  {{cart_item.product.pro_offer.discount|mul:cart_item.product.price|div:100|sub:cart_item.product.price|abs|mul:cart_item.quantity|floatformat:2}}</h5><h6 class="text-muted ml-2"></h6>
+                  
+                 </div>
+                 {% else %}
+                 <div class="d-flex align-items-center justify-content-center mt-2"></div>
+                 <h5>₹ {{cart_item.product.price|floatformat:2}}</h5>
+              </div>      
+                 {% endif%}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <div class="checkout_btn_inner float-right">
+            <a class="btn_1 checkout_btn_1" href="{% url 'checkout'%}">Proceed to checkout</a>
+          </div>
+        </div>
+      </div>
+  </section>
+  {% endif %}
+  <!--================End Cart Area =================-->
+{% endblock %}
+

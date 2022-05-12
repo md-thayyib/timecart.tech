@@ -1,0 +1,127 @@
+{% extends 'admin_panel/base_admin.html'%} {% block content%}
+{% load crispy_forms_tags %}
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.css">
+</head>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <div id="alert-box"></div>
+      <div id="image-box" class="mb-3" ></div>
+<form style="margin-left:2rem;background-color:#F3F6F9;padding:1rem;" class="uniForm" action="{% url 'edit_product' product.id %}" id="image-form" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="form-control row " style="padding:1rem;background-color:#F3F6F9;" width='2rem'>
+    {{form|crispy}}
+
+  <button type="submit" class="btn btn-warning" id="confirm-btn">save</button>
+</form>
+</div>
+
+
+  <script>
+    const alertBox = document.getElementById('alert-box')
+    const imageBox = document.getElementById('image-box')
+    const imageForm = document.getElementById('image-form')
+    const confirmBtn = document.getElementById('confirm-btm')
+    const input = document.getElementById('id_images')
+    const csrf = document.getElementById('csrfmiddlewaretoken')
+
+    input.addEventListener('change', ()=>{
+      console.log('changed')
+      const img_data = input.files[0]
+      const url = URL.createObjectURL(img_data)
+      imageBox.innerHTML = '<img src="${url}" id="image" width="500px">'
+      const image = document.getElementById('image')
+      var $image = $('#image');
+
+        $image.cropper({
+          aspectRatio: 16 / 9,
+          crop: function(event) {
+            console.log(event.detail.x);
+            console.log(event.detail.y);
+            console.log(event.detail.width);
+            console.log(event.detail.height);
+            console.log(event.detail.rotate);
+            console.log(event.detail.scaleX);
+            console.log(event.detail.scaleY);
+          }
+        });
+
+// Get the Cropper.js instance after initialized
+var cropper = $image.data('cropper'); 
+
+    })
+   
+
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cropper/1.0.1/jquery-cropper.min.js"></script>
+  
+<div class="" style="height: 100px; width:100px; margin-top: 30em;">
+  <img id="image_1" class="invisible" style="height: 100px; width:100px;" src="" alt="">
+  <img id="image_2" class="invisible mt-2" style="height: 100px; width:100px;" src="" alt="">
+  <img id="image_3" class="invisible mt-2" style="height: 100px; width:100px;" src="" alt="">
+  <img id="image_4" class="invisible mt-2" style="height: 100px; width:100px;" src="" alt="">
+  <img id="image_5" class="invisible mt-2" style="height: 100px; width:100px;" src="" alt="">
+</div>
+
+
+  <style>
+    
+    .invisible{
+        display: none;  
+          }
+        input[type='file'] {
+          color: rgba(0, 0, 0, 0);
+          border: none;
+        
+        }
+  </style>
+
+
+<script>
+  // image 1
+
+  const image_1 = document.getElementById('id_images')
+  image_1.addEventListener('change',function(event) {
+    var image = document.getElementById('image_1');
+    image.src = URL.createObjectURL(event.target.files[0]);
+    image.classList.remove('invisible')
+  });
+    //image 2
+    const image_2 = document.getElementById('id_images1')
+  image_2.addEventListener('change',function(event) {
+    var image = document.getElementById('image_2');
+    image.src = URL.createObjectURL(event.target.files[0]);
+    image.classList.remove('invisible')
+
+  });
+    //image 3
+    const image_3 = document.getElementById('id_images2')
+  image_3.addEventListener('change',function(event) {
+    var image = document.getElementById('image_3');
+    image.src = URL.createObjectURL(event.target.files[0]);
+    image.classList.remove('invisible')
+
+  });
+     //image 4
+     const image_4 = document.getElementById('id_images3')
+  image_4.addEventListener('change',function(event) {
+    var image = document.getElementById('image_4');
+    image.src = URL.createObjectURL(event.target.files[0]);
+    image.classList.remove('invisible')
+
+  });
+     //image 5
+     const image_5 = document.getElementById('id_images4')
+  image_5.addEventListener('change',function(event) {
+    var image = document.getElementById('image_5');
+    image.src = URL.createObjectURL(event.target.files[0]);
+    image.classList.remove('invisible')
+
+  });
+</script> -->
+
+</div>
+</div>
+{% endblock %}

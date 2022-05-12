@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% load mathfilters%}
+{% block content%}
+
+<!--================ confirmation part start =================-->
+<section class="confirmation_part p-4">
+    <div class="container">
+      <div class="col-lg-12">
+          <div class="confirmation_tittle">
+            <span>Review Order and choose payment.</span>
+          </div>
+        </div>
+      <div class="row">
+        <div class="col-lg-4 col-lx-4">
+          <div class="single_confirmation_details">
+            <h4>Billing Address</h4>
+            {{order_data.address_line1}} <br>
+            {{order_data.city}} <br>
+            {{order_data.country}} <br>
+            {{order_data.zip}}
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="order_details_iner" style="margin-top: 0;">
+            <h3>Order Details</h3>
+            <table class="table table-borderless">
+              <thead>
+                <tr>
+                  <th scope="col" colspan="2">Product</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                {% for item in cart_item%}
+                <tr>
+                  <th colspan="2"><span>{{item.product.product_name}}</span></th>
+                  <th>{{item.quantity}}</th>
+                  <th> {% if item.product.category.cat_offer%}
+                    <span class='last'>${{item.product.category.cat_offer.discount|mul:item.product.price|div:100|sub:item.product.price|abs|floatformat:2}}</span>
+                    {% elif item.product.pro_offer%}
+                    <span class='last'>{{item.product.pro_offer.discount|mul:item.product.price|div:100|sub:item.product.price|abs|floatformat:2}}</span>
+                   {% else %}
+                   <span class='last'>${{item.product.price|floatformat:2}}</span>
+                   {% endif%}</th>
+                  <th>{% if item.product.category.cat_offer%}
+                    <span class='last'>${{item.product.category.cat_offer.discount|mul:item.product.price|div:100|sub:item.product.price|abs|mul:item.quantity|floatformat:2}}</span>
+                    {% elif item.product.pro_offer%}
+                    <span class='last'>{{item.product.pro_offer.discount|mul:item.product.price|div:100|sub:item.product.price|abs|mul:item.quantity|floatformat:2}}</span>
+                   {% else %}
+                   <span class='last'>${{item.product.price|mul:item.quantity|floatformat:2}}</span>
+                   {% endif%}</th>
+                 
+                </tr>
+                {% endfor%}
+                <tr>
+                  <th colspan="3">Subtotal</th>
+                  <th> <span></span></th>
+                  <th> <span>{{sub_total|floatformat:2}}</span></th>
+                </tr>
+                <tr>
+                  <th colspan="3">shipping</th>
+                  <th><span></span></th>
+                  <th><span>flat rate: 5.00</span></th>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th scope="col" colspan="3">Grand Total</th>
+                  <th></th>
+                  <th scope="col">{{ sub_total | add:5|floatformat:2}}</th>
+                </tr>
+               
+              </tfoot>
+            </table>
+            <div class="col-md-3">
+
+
+
+
+
+
+<!-- Set up a container element paypal for the button -->
+              <script src="https://www.paypal.com/sdk/js?client-id=AbZ1PMGV77_89-ap2iGwwQdK2pZ4R-A892kO9HUWd66KzB8sNJJSqTPRLqZIcMnbCa1S5SVlU9lTp1tl&currency=USD"></script>
+              <div id="paypal-button-container"></div>
+                      
+   <script>
+     function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+  
+    var csrftoken = getCookie('csrftoken');
+    var total = '{{ sub_total | add:"5"}}'
+    var url = '{% url 'paypal_complete' %}'
+    var orderID = '{{order_data.order_number}}'       
+    var payment_method= 'Paypal'
+    
+
+  
+    
+   
+    paypal.Buttons({
+      
+      // Sets up the transaction when a payment button is clicked
+      createOrder: (data, actions) => {
+        
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: total   
+            }
+          }]
+        });
+      },
+      
+      // Finalize the transaction after payer approval
+      onApprove: (data, actions) => {
+        return actions.order.capture().then(function(orderData) {
+          
+          console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+          
+          const transaction = orderData.purchase_units[0].payments.captures[0];
+          
+          // completeOrder()
+          sendData();              
+          function sendData(){
+            
+//send payment details to backend
+                                      fetch(url, {
+                                        method: 'POST',       
+                                        headers: {
+                                          'Content-Type': 'application/json',
+                                          'X-CSRFToken':csrftoken
+                                        },
+                                        body: JSON.stringify({
+                                          orderID :orderID,
+                                          transID: orderData.id,
+                                          payment_method:payment_method,
+                                          status:orderData.status,
+                                          total:total,
+                                        }),
+                                      })
+                                      .then(response => response.json())
+                                      .then(data => {
+                                        console.log('Success:', data);
+                                        window.location.href = window.location.origin + '/orders/paypal_complete_display/'
+                                        console.log(window.location)
+                                      })
+                                      .catch((error) => {
+                                        console.error('Error:', error);
+
+                                      }); 
+
+          }
+         
+        });
+      }
+    }).render('#paypal-button-container');
+  </script>
+
+
+  <a href="{% url 'cash_on_delivery' order_data.order_number  %}" class="btn btn_1 mt-3" style="padding:17px 35px" >Cash on delivery</a>
+
+
+
+
+
+
+
+
+
+
+  <button class="btn btn_1 mt-3" style="padding:17px 35px" id="rzp-button1">Pay with Razorpay</button>
+
+
+      <form href={% url 'razor_success'%} method="POST">
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+        var options = {
+            "key": "{{ razorpay_merchant_key }}", // Enter the Key ID generated from the Dashboard
+            "amount": "{{ razorpay_amount }}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "My cart thayyib",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": "{{ razorpay_order_id }}", 
+            "callback_url": "{{callback_url}}",
+            "prefill": {
+                "name": "Muhammed Thayyib",
+                "email": "mu@gmail.com",
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc",
+                "hide_topbar": true 
+            },
+            "modal": {
+              "animation": true,
+              
+            }
+
+        };
+        var rzp1 = new Razorpay(options);
+        document.getElementById('rzp-button1').onclick = function(e){
+            rzp1.open();
+            e.preventDefault();
+        }
+        </script>
+ </form>
+
+
+
+
+
+
+
+
+
+            </div>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+   
+  </section>
+   
+  <!--================ confirmation part end =================-->
+
+{% endblock%}

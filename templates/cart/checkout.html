@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load mathfilters%}
+
+{% block content%}
+
+  <!--================Checkout Area =================-->
+  <section class="checkout_area p-3">
+    <div class="container">
+        <div class="row">
+          <div class="col-lg-8">
+            <h3>Billing Details</h3>
+            <form class="row contact_form" action="{% url 'place_order' %}" method="post">
+              {% csrf_token %}
+              <div class="col-md-6 form-group p_star">
+                <input type="text" class="form-control" name="first_name" required placeholder="First name"/>
+                
+              </div>
+              <div class="col-md-6 form-group p_star">
+                <input type="text" class="form-control" id="last" name="last_name" required placeholder="Last name" />
+              
+              </div>
+              <div class="col-md-6 form-group p_star">
+                <input type="text" class="form-control" id="number" name="phone_number" required placeholder="Phone number" />
+     
+              </div>
+              <div class="col-md-6 form-group p_star">
+                <input type="email" class="form-control" id="email" name="email" required placeholder="Email Address" />
+                
+              </div>
+              <div class="col-md-6 form-group p_star">
+                <input type="text" class="form-control" id="" name="country" required placeholder="Country" />
+                
+              </div>
+              <div class="col-md-6 form-group p_star">
+                <input type="text" class="form-control" id="add1" name="address_line1" required placeholder="Address line 01"/>
+              
+              </div>
+              <div class="col-md-6 form-group p_star">
+                <input type="text" class="form-control" id="add1" name="address_line2" placeholder="Address line 02" />
+              </div>
+              <div class="col-md-6 form-group p_star">
+                <input type="text" class="form-control" id="city" name="city" required placeholder="Town/City"/>
+                
+              </div>
+              <div class="col-md-6 form-group">
+                <input type="text" class="form-control" id="city" name="district" placeholder="city" required />
+              </div>
+              <div class="col-md-6 form-group">
+                <input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP" />
+              </div>
+              
+              <div class="col-md-6 form-group">
+                <input type="text" class="form-control" id="zip" name="state" placeholder="State" />
+              </div>
+            </div>
+          <div class="col-lg-4">
+            <div class="order_box">
+              <h2>Your Order</h2>
+              <ul class="list">
+                <li>
+                  <a href="#">Product
+                    <span>Total</span>
+                  </a>
+                </li>
+                {% for cart_item in cart_items%}
+                <li>
+                  <a href="#">{{cart_item.product.product_name}}
+                    <span class="middle">x {{cart_item.quantity}}</span>
+                    {% if cart_item.product.pro_offer%}
+                    <span class='last'>{{cart_item.product.pro_offer.discount|mul:cart_item.product.price|div:100|sub:cart_item.product.price|abs|mul:cart_item.quantity|floatformat:2}}</span>
+                    {% elif cart_item.product.category.cat_offer%}
+                    <span class='last'>${{cart_item.product.category.cat_offer.discount|mul:cart_item.product.price|div:100|sub:cart_item.product.price|abs|mul:cart_item.quantity|floatformat:2}}</span>
+                    
+                   {% else %}
+                   <span class='last'>${{cart_item.product.price|mul:cart_item.quantity|floatformat:2}}</span>
+                   {% endif%}
+                  </a>
+                </li>
+                {% endfor%}
+              </ul>
+              <ul class="list list_2">
+                <li>
+                  <a href="#">Subtotal
+                    <span>{{sub_total|floatformat:2}}</span>
+                    
+                  </a>
+                </li>
+                {% if coupon %}
+                <li>
+                  <a href="#" class='text-danger'>Coupon applied
+                    <span class='text-danger'>-{{deduction|floatformat:2}}</span>
+                  </a>
+                </li>
+              
+                <li>
+                  <a href="#">Total
+                    <span>{{final_price|floatformat:2}}</span>
+                  </a>
+                </li>
+                {% endif %}
+              </ul>
+             
+
+              <a href="{% url 'place_order' %}"></a><button class="btn btn_1">Confirm and pay</button> </a>
+            </div>
+          </form>
+            <form action="{% url 'coupon_apply' %}" method="POST">
+              {% csrf_token %}
+            <div class="input-group">
+              {{coupon_apply_form}}
+              <div class="input-group-append">
+                <button type="submit" class="btn-warning">Apply Coupon</button>
+              </div>
+            </div>
+          </form>
+          </div>
+        </div>
+     
+      </div>
+    </div>
+  </section>
+  
+  
+  <!--================End Checkout Area =================-->
+{% endblock%}

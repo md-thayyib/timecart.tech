@@ -1,0 +1,89 @@
+ {%extends 'base.html'%}
+ {%load static%}
+ {%block content%}
+ <main>
+    <!-- Latest Products Start -->
+    <section class="popular-items">
+        <div class="container">
+            <div class="row product-btn justify-content-between mb-40">
+                <!-- Select items -->
+               
+
+                        <div class="select-itms">
+                            <select  id="select1" name="select" onchange="location = this.value;">
+                                <option value="?sort=l2h">Price: low to high</option>
+                                <option value="?sort=h2l">Price: high to low</option>
+                                <option value="?sort=new">Newest</option>
+                            </select>
+                        </div>
+                   
+            
+            </div>
+            <!-- Nav Card -->
+            <div class="tab-content" id="nav-tabContent">
+                <!-- card one -->
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <div class="row">
+                        {%for product in products%}
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="single-popular-items mb-50 text-center">
+                                <div class="popular-img">
+                                    <img src="{{product.images.url}}" alt="">
+                                   
+                                    <div class="img-cap">
+                                        {% if product.stock > 0 %}
+                                        <a href='{% url 'add_cart' product.id%}'><span>Add to cart</span></a>
+                                            {% endif%}
+                                        
+                                    </div>
+                                    <div class="favorit-items">
+                                        <span class="flaticon-heart"></span>
+                                    </div>
+                                </div>
+                                <div class="popular-caption">
+                                    <h3><a href="product_details.html">{{product.product_name}}</a></h3>
+                                    <span>{{product.price}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {%endfor%}
+                    </div>
+                </div>
+            </div>
+          <!-- End Nav Card -->
+        </div>
+    </section>
+    <!-- Latest Products End -->
+    <!--? Shop Method Start-->
+    <div class="shop-method-area">
+        <div class="container">
+            <div class="method-wrapper">
+                <div class="row d-flex justify-content-between">
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div class="single-method mb-40">
+                            <i class="ti-package"></i>
+                            <h6>Free Shipping Method</h6>
+                            
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div class="single-method mb-40">
+                            <i class="ti-unlock"></i>
+                            <h6>Secure Payment System</h6>
+                            
+                        </div>
+                    </div> 
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div class="single-method mb-40">
+                            <i class="ti-reload"></i>
+                            <h6>Fast delivery</h6>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Shop Method End-->
+</main>
+                {%endblock%}
