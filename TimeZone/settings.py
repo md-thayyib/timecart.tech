@@ -34,7 +34,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -98,10 +98,10 @@ AUTH_USER_MODEL = 'accounts.Account'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db-for-timecart',
+        'NAME': 'ecommerce',
         'USER': 'thayyib',
-        'PASSWORD': '12345678',
-        'HOST': 'db-for-timecart.ctlcsro6cbs6.ap-south-1.rds.amazonaws.com',
+        'PASSWORD': '1430',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
