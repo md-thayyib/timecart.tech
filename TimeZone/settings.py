@@ -98,11 +98,12 @@ AUTH_USER_MODEL = 'accounts.Account'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db-for-timecart',
-        'USER': 'thayyib',
+        'NAME': 'timezone',
+        'USER': 'postgres',
         'PASSWORD': '12345678',
-        'HOST': 'db-for-timecart.ctlcsro6cbs6.ap-south-1.rds.amazonaws.com',
+        'HOST': 'timezone.ctlcsro6cbs6.ap-south-1.rds.amazonaws.com',
         'PORT': '5432',
+
     }
 }
 
@@ -147,6 +148,9 @@ STATICFILES_DIRS = [
     os.path.join('static')
 ]
 
+# when doing collectstatic all static files will take from STATICFILES_DIRS and put in in STATC_ROOT
+# on deploy we will create 'django.conf' file on sites-availbale and will tell that toot  
+STATIC_ROOT ='statics'
 
 #media files
 MEDIA_URL = '/media/'
@@ -165,10 +169,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 #to secure cookie in razor payment
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SAMESITE = 'None'
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SAMESITE = 'None'
+# SESSION_COOKIE_SAMESITE = 'None'
 
 
-CRISPY_TEMPLATE_PACK = 'uni_form'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

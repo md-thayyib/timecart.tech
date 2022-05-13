@@ -81,7 +81,7 @@ def add_cart(request,product_id):
 
             cart_item.save()
     
-    return redirect('store')
+    return redirect('cart')
 
 def remove_cart(request,product_id):
     
@@ -124,7 +124,7 @@ def cart(request, sub_total=0, quantity=0, cart_items=None):
         else:
             cart = Cart.objects.get(cart_id=_cart_id(request))
             cart_items = CartItem.objects.filter(cart=cart, is_active=True)
-            cart_count = CartItem.objects.filter(cart=cart, is_active=True).count()
+            
         
        
     except:
@@ -134,7 +134,6 @@ def cart(request, sub_total=0, quantity=0, cart_items=None):
         'sub_total': sub_total,
         'quantity': quantity,
         'cart_items': cart_items,
-        'cart_count':cart_count
     }
     return render(request, 'store/cart.html', context)    
 

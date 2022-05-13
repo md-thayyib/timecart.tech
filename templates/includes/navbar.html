@@ -46,7 +46,7 @@
                             {% if user.id is None%}
                             <li> <a href="{% url 'login' %}"><span class="flaticon-user">Login</span></a></li>
                             <li><a href="{% url 'register'%}" class ='text-primary'>Register</a></li>
-                            
+                            <li><a href="{% url 'cart' %}"><span class="flaticon-shopping-cart cart-count">{{cart_count}}</span></a> </li>
                             {% else %}
                             <li> <a href="{% url 'logout' %}"><span class="flaticon-user">Logout</span></a></li>
                             <li><a href="{% url 'cart' %}"><span class="flaticon-shopping-cart cart-count">{{cart_count}}</span></a> </li>
