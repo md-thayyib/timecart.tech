@@ -100,8 +100,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'db-for-timecart',
         'USER': 'thayyib',
-        'PASSWORD': '1430',
-        'HOST': 'timecart.ctlcsro6cbs6.ap-south-1.rds.amazonaws.com',
+        'PASSWORD': '12345678',
+        'HOST': 'db-for-timecart.ctlcsro6cbs6.ap-south-1.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
