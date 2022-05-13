@@ -98,10 +98,10 @@ AUTH_USER_MODEL = 'accounts.Account'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ecommerce',
+        'NAME': 'db-for-timecart',
         'USER': 'thayyib',
         'PASSWORD': '1430',
-        'HOST': 'localhost',
+        'HOST': 'timecart.ctlcsro6cbs6.ap-south-1.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
