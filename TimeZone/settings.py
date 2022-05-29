@@ -19,8 +19,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
-RAZOR_KEY_SECRET =str(os.getenv('RAZOR_KEY_SECRET'))
-RAZOR_KEY_ID =str(os.getenv('RAZOR_KEY_ID'))
+RAZOR_KEY_SECRET = '7hOFVJSDn4Po1wyGPARzH9o6'
+RAZOR_KEY_ID='rzp_test_8cWmlnkYHYznrK'
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
