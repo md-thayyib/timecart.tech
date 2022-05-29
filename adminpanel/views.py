@@ -250,7 +250,20 @@ def delete_category(request,id):
 def add_product(request):
     form = ProductForm(request.POST,request.FILES)
     if form.is_valid():
-        form.save()
+
+
+
+
+        product = Product()
+        product.product_name = form.cleaned_data['product_name']
+        product.product_slug = form.cleaned_data['product_slug']
+        product.description = form.cleaned_data['description']
+        product.price = form.cleaned_data['price']
+        product.images = form.cleaned_data['images']
+        product.stock = form.cleaned_data['stock']
+        product.category = form.cleaned_data['category']
+        # product = Product.objects.create(product_name=product.product_name, product_slug=product.slug,price=product.price, description=product.description, images= product.images, stock=product.stock,category=product.category)
+        product.save()
         messages.info(request,'Product added successfully')
         return redirect('product_view')
     context = {'form':form}

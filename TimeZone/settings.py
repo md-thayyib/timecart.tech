@@ -13,10 +13,14 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 import os
 from pathlib import Path
-SECRET_KEY = 'django-insecure-pws=8c^zk$xv!bv%+b3wd148&8d3^3n*w3t_wa!tp)d=d53gf)'
-RAZOR_KEY_SECRET = '7hOFVJSDn4Po1wyGPARzH9o6'
-RAZOR_KEY_ID='rzp_test_8cWmlnkYHYznrK'
 
+#to safe secret key
+from dotenv import load_dotenv
+load_dotenv()
+
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
+RAZOR_KEY_SECRET =str(os.getenv('RAZOR_KEY_SECRET'))
+RAZOR_KEY_ID =str(os.getenv('RAZOR_KEY_ID'))
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -57,6 +61,7 @@ INSTALLED_APPS = [
     'mathfilters',
     'django_filters',
     'crispy_forms',
+
 ]
 
 MIDDLEWARE = [
@@ -82,6 +87,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processors.counter',
             ],
         },
     },
@@ -100,13 +106,24 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'timezone',
         'USER': 'postgres',
-        'PASSWORD': '12345678',
+        'PASSWORD': '123456789',
         'HOST': 'timezone.ctlcsro6cbs6.ap-south-1.rds.amazonaws.com',
         'PORT': '5432',
 
     }
 }
+#local database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'ecommerce',
+#         'USER': 'thayyib',
+#         'PASSWORD': '1430',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
 
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -169,8 +186,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 #to secure cookie in razor payment
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SAMESITE = 'None'
 # SESSION_COOKIE_SAMESITE = 'None'
 

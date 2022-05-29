@@ -83,16 +83,17 @@ def login_otp(request):
         phone_number = request.POST['phone_number']
         if mobile==phone_number:
             # Your Account SID from twilio.com/console
-            account_sid = "ACae24b7b72fda67806f713a84ae269d11"
+            # account_sid = "VAf57034be137518b396df0a50dedb6d72" verify sid
+            account_sid = 'ACf4a32cd4e73a7c6b54878df2a3ed122a'
             # Your Auth Token from twilio.com/console
-            auth_token  = "98c9ec770e77b68047cdcb010eb73c45"
+            auth_token  = "655a2fe43e710ff02b2dc1f8fd2420cb"
 
             client = Client(account_sid, auth_token)
             global otp
             otp = str(random.randint(1000,9999))
             message = client.messages.create(
                 to="+919562024224", 
-                from_="+13349662693",
+                from_="+19784812371",
                 body="Hello Thayyib! Your Login OTP is"+otp)
             messages.success(request,'OTP has been sent to 9562024224 & enter OTP')
             return render (request, 'login_otp1.html')

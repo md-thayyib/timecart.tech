@@ -145,7 +145,7 @@ def razor_success(request):
     order = Order.objects.get(order_number = razor)
     print('razor success page')
     payment = Payment()
-    payment.user= current_user
+    payment.user= request.user
     payment.payment_id = transID
     payment.payment_method = "Razorpapy"
     payment.amount_paid = order.order_total

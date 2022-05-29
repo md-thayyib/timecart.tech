@@ -15,6 +15,7 @@ from adminpanel.models import ProductOffer
 from adminpanel.models import CategoryOffer
 from django.contrib import messages
 from .forms import CouponApplyForm
+
 # Create your views here.
 def offer_check_function(item):
     product = Product.objects.get(product_name=item)
@@ -80,8 +81,8 @@ def add_cart(request,product_id):
             )
 
             cart_item.save()
-    
-    return redirect('cart')
+        #to return to the same page by using url
+    return redirect(request.META.get('HTTP_REFERER'))
 
 def remove_cart(request,product_id):
     
@@ -119,7 +120,7 @@ def cart(request, sub_total=0, quantity=0, cart_items=None):
         if request.user.is_authenticated:
             
             cart_items = CartItem.objects.filter(user=request.user,is_active=True)
-            cart_count = CartItem.objects.filter(user=request.user,is_active=True).count()
+          
             
         else:
             cart = Cart.objects.get(cart_id=_cart_id(request))

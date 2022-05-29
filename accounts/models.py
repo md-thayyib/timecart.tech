@@ -1,5 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.core.validators import RegexValidator,MinLengthValidator
+
+nameValidator=RegexValidator(r'^[A-Za-z][A-Za-z ]*$','Enter a valid name')
+phoneValidator = RegexValidator(r'^\d{10}$','Enter a valid phone number')
+nameMinlength=MinLengthValidator(3,'Min 3 char required')
+
+
 
 
 # Create your models here.
@@ -36,11 +43,11 @@ class MyAccountManager(BaseUserManager):
         return user
 
 class Account(AbstractBaseUser):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50,validators=[nameValidator,nameMinlength])
+    last_name = models.CharField(max_length=50,validators=[nameValidator,nameMinlength])
     user_name = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=50, unique=True)
-    phone_number = models.CharField(max_length=50)
+    phone_number = models.CharField(max_length=10,validators=[phoneValidator],unique=True)
     
 
     #required 
