@@ -167,19 +167,43 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
+
+# STATICFILES_DIRS = [ 
+#     os.path.join('static')
+# ]
+
+# # when doing collectstatic all static files will take from STATICFILES_DIRS and put in in STATC_ROOT
+# # on deploy we will create 'django.conf' file on sites-availbale and will tell that toot  
+# STATIC_ROOT ='statics'
+
+# #media files
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = BASE_DIR/'media'
+
+
+# for herukuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+
 django_on_heroku.settings(locals())
-STATICFILES_DIRS = [ 
-    os.path.join('static')
-]
+STATIC_ROOT = 'staticfiles'
 
-# when doing collectstatic all static files will take from STATICFILES_DIRS and put in in STATC_ROOT
-# on deploy we will create 'django.conf' file on sites-availbale and will tell that toot  
-STATIC_ROOT ='statics'
+STATIC_URL = '/static/'
 
-#media files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR/'media'
+STATICFILES_DIRS = (
+    (os.path.join(BASE_DIR,'smcore','static')),
+)
+
+
+STATICFILES_FINDERS = (
+
+    #'django.contrib.staticfiles.finders.FileSystemFinder',
+    #'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
+
+# end heroku
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
