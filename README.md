@@ -1,4 +1,4 @@
-# timecart.tech
+# TimeZone
 
 https://time-cart.herokuapp.com/
 
