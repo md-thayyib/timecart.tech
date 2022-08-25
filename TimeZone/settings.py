@@ -12,11 +12,11 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 
 import os
+import django_on_heroku
 from pathlib import Path
 
 #to safe secret key
-from dotenv import load_dotenv
-load_dotenv()
+
 
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 RAZOR_KEY_SECRET = '7hOFVJSDn4Po1wyGPARzH9o6'
@@ -101,27 +101,34 @@ AUTH_USER_MODEL = 'accounts.Account'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'timezone',
+#         'USER': 'postgres',
+#         'PASSWORD': '123456789',
+#         'HOST': 'timezone.ctlcsro6cbs6.ap-south-1.rds.amazonaws.com',
+#         'PORT': '5432',
+
+#     }
+# }
+# local database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'timezone',
-        'USER': 'postgres',
-        'PASSWORD': '123456789',
-        'HOST': 'timezone.ctlcsro6cbs6.ap-south-1.rds.amazonaws.com',
+        'NAME': 'd42e7a1f9d5fu8',
+        'USER': 'wkwrijybhdzkdj',
+        'PASSWORD': 'ebd5693e0b067a7d7a449c9b202080a32a1ee8ce3fd46cdb1adea2bc3183e90b',
+        'HOST': 'postgres://wkwrijybhdzkdj:ebd5693e0b067a7d7a449c9b202080a32a1ee8ce3fd46cdb1adea2bc3183e90b@ec2-44-206-137-96.compute-1.amazonaws.com:5432/d42e7a1f9d5fu8',
         'PORT': '5432',
 
     }
 }
-#local database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'ecommerce',
-#         'USER': 'thayyib',
-#         'PASSWORD': '1430',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
 
+# DATABASES = {
+#     'default' :{
+#         'ENGINE' : 'django.db.backends.sqlite3',
+#         'NAME' : BASE_DIR/ 'db.sqlite3'
 #     }
 # }
 
@@ -161,6 +168,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
+django_on_heroku.settings(locals())
 STATICFILES_DIRS = [ 
     os.path.join('static')
 ]
@@ -191,5 +199,8 @@ SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SAMESITE = 'None'
 # SESSION_COOKIE_SAMESITE = 'None'
 
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
